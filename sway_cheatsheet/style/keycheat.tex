@@ -1,0 +1,67 @@
+% keycheat.tex — the rendering engine. Content files (sections/*.tex)
+% and layout.tex should only ever call the commands defined here; they
+% should never need to know how a keycap or a group box is actually drawn.
+%
+% Public API:
+%   \key{Label}                     -> one keycap, usable inline anywhere
+%   \combo{Mod,Shift,E}             -> a run of keycaps joined by "+"
+%   \sr{Mod,Shift,E}{description}   -> one table row: combo + description
+%   \srx{<raw left cell>}{description} -> one table row, custom left cell
+%   \group{Title}{Width}{Rows}[Note] -> a titled panel; Rows is a tabular body
+%     (built from \sr / \srx lines), Note is an optional muted footer line
+%
+% Styling knobs (colours, fonts) live in palette.tex / config.tex, not here.
+
+\tikzset{
+  shadow xshift=0pt,
+  shadow yshift=-2bp,
+  keycapstyle/.style={
+    rounded corners=3pt,
+    draw=borderKeycap,
+    line width=0.6pt,
+    fill=bgKeycap,
+    minimum height=1.8em,
+    minimum width=1.8em,
+    inner sep=4pt,
+    font=\keyfont\small,
+    text=textPrimary,
+    align=center,
+  },
+  groupbox/.style={
+    rounded corners=7pt,
+    draw=borderGroup,
+    line width=1pt,
+    fill=bgGroup,
+    inner sep=14bp,
+    align=left,
+    drop shadow={opacity=0.35,fill=black},
+  },
+}
+
+\newcommand{\key}[1]{\tikz[baseline=(k.base)]{\node[keycapstyle](k){#1};}}
+
+\newcommand{\keyplus}{\,{\footnotesize\color{textSecondary}+}\,}
+
+\newcommand{\combo}[1]{%
+  \foreach \k [count=\i] in {#1}{%
+    \ifnum\i>1 \keyplus\fi
+    \key{\k}%
+  }%
+}
+
+\newcommand{\sr}[2]{\combo{#1} & #2 \\}
+\newcommand{\srx}[2]{#1 & #2 \\}
+
+\NewDocumentCommand{\group}{mmmO{}}{%
+  \begin{minipage}[t]{#2 bp}
+    {\keyfont\bfseries\color{accent}\fontsize{15}{15}\selectfont #1}\\[4bp]
+    {\color{borderGroup!60!bgGroup}\rule{\linewidth}{0.8bp}}\\[7bp]
+    \renewcommand{\arraystretch}{1.45}
+    \setlength{\tabcolsep}{0pt}
+    \begin{tabular}{@{}r@{\hspace{9bp}}l@{}}
+      \small\color{textPrimary}
+      #3
+    \end{tabular}
+    \IfNoValueTF{#4}{}{\\[7bp]{\fontsize{8}{9}\selectfont\itshape\color{textSecondary}#4}}
+  \end{minipage}%
+}

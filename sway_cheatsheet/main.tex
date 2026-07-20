@@ -1,0 +1,48 @@
+% main.tex — glue only. Compile with: xelatex main.tex  (see Makefile)
+%
+% File map:
+%   config.tex          canvas size, margins, fonts, header text
+%   style/palette.tex    colours (edit to reskin)
+%   style/keycheat.tex   \key / \combo / \sr / \srx / \group macros
+%   sections/*.tex        one file per shortcut group, just data
+%   grid.tex             where each group box sits on the canvas
+\documentclass[tikz,border=0pt]{standalone}
+
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usetikzlibrary{positioning,calc,shadows}
+
+\input{config.tex}
+\input{style/palette.tex}
+\input{style/keycheat.tex}
+
+\begin{document}
+\begin{tikzpicture}[x=1bp,y=1bp]
+  % pin the canvas to exactly wallW x wallH bp (== px at 72dpi), with
+  % (0,0) at the bottom-left corner, regardless of what content draws.
+  \path[use as bounding box] (0,0) rectangle (\wallW,\wallH);
+  \fill[bgCanvas] (0,0) rectangle (\wallW,\wallH);
+
+  % ---- header -----------------------------------------------------------
+  \node[anchor=north west,text=textPrimary,inner sep=0pt]
+    at ($(0,\wallH)+(\marginX,-46)$)
+    {\keyfont\bfseries\fontsize{40}{40}\selectfont \sheetTitle};
+  \node[anchor=north west,text=textSecondary,inner sep=0pt]
+    at ($(0,\wallH)+(\marginX,-80)$)
+    {\fontsize{13}{13}\selectfont \sheetSubtitle};
+  \node[anchor=north east,inner sep=0pt]
+    at ($(0,\wallH)+(\wallW-\marginX,-52)$)
+    {\key{\sheetMod} {\fontsize{11}{11}\selectfont\color{textSecondary}= \sheetModName}};
+  \draw[borderGroup!60!bgGroup,line width=0.8bp]
+    ($(0,\wallH)+(\marginX,-104)$) -- ($(0,\wallH)+(\wallW-\marginX,-104)$);
+
+  % ---- content grid -------------------------------------------------------
+  \input{grid.tex}
+
+  % ---- footer -------------------------------------------------------------
+  \node[anchor=south east,text=textSecondary,inner sep=0pt]
+    at (\wallW-\marginX,\marginBottom-18)
+    {\fontsize{8}{8}\selectfont \deviceName\ \textbullet\ sway\_cheatsheet};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,31 @@
+% palette.tex — colour definitions only. Nothing else should live here.
+%
+% Block 1 is the *literal* default Sway/i3 client colour scheme, taken
+% verbatim from `man 5 sway` (client.focused / client.unfocused / ...).
+% Leave it alone unless Sway's own defaults change.
+%
+% Block 2 is the *semantic* palette: the names every other file actually
+% uses. Re-skinning the whole sheet (light mode, a different WM theme,
+% a wallpaper-matched accent, ...) means editing ONLY block 2.
+
+% ---- 1. raw Sway defaults ----------------------------------------------
+\definecolor{swayFocusedBorder}{HTML}{4C7899}
+\definecolor{swayFocusedBg}{HTML}{285577}
+\definecolor{swayFocusedText}{HTML}{FFFFFF}
+\definecolor{swayIndicator}{HTML}{2E9EF4}
+\definecolor{swayUnfocusedBorder}{HTML}{333333}
+\definecolor{swayUnfocusedBg}{HTML}{222222}
+\definecolor{swayUnfocusedText}{HTML}{888888}
+\definecolor{swayUrgentBg}{HTML}{900000}
+\definecolor{swayPlaceholderBg}{HTML}{0C0C0C}
+
+% ---- 2. semantic roles (edit these to reskin) --------------------------
+\colorlet{bgCanvas}{swayPlaceholderBg}       % wallpaper background
+\colorlet{bgGroup}{swayUnfocusedBg}          % cheat-group panel fill
+\colorlet{borderGroup}{swayUnfocusedBorder}  % cheat-group panel border
+\colorlet{bgKeycap}{swayFocusedBg}           % keycap fill
+\colorlet{borderKeycap}{swayFocusedBorder}   % keycap border
+\colorlet{accent}{swayIndicator}             % titles, rules, highlights
+\colorlet{textPrimary}{swayFocusedText}      % keycap labels, row text
+\colorlet{textSecondary}{swayUnfocusedText}  % descriptions, notes, footer
+\colorlet{urgent}{swayUrgentBg}              % reserved for future use

@@ -1,0 +1,37 @@
+% grid.tex — where each group box goes on the canvas. This is the file
+% to touch when adding, removing, or rearranging groups. Content lives
+% in sections/*.tex; box styling lives in style/keycheat.tex; this file
+% only decides placement.
+%
+% Layout: 3 columns, each \colWidth wide (see config.tex). Boxes stack
+% top-to-bottom within a column by anchoring to the previous box's own
+% "south west" corner (via calc) plus \gutterY, so a column's total
+% height is whatever its content needs — no manual height bookkeeping.
+% To add a group: write sections/foo.tex, then add one \node line here,
+% either starting a new column (positioned "at (colX)") or continuing
+% one ("at ($(prev.south west)+(0,-\gutterY)$)").
+
+% ---- column anchor points (top-left of column 1/2/3) -------------------
+\coordinate (colA) at ($(0,\wallH)+(\marginX,-\marginTop)$);
+\coordinate (colB) at ($(colA)+(\colWidth+\gutterX,0)$);
+\coordinate (colC) at ($(colB)+(\colWidth+\gutterX,0)$);
+
+% ---- column A: Basics / Workspaces / Scratchpad ------------------------
+\node[groupbox,anchor=north west] (g-basics) at (colA)
+  {\group{Basics}{\colWidth}{\input{sections/basics.tex}}};
+\node[groupbox,anchor=north west] (g-workspaces) at ($(g-basics.south west)+(0,-\gutterY)$)
+  {\group{Workspaces}{\colWidth}{\input{sections/workspaces.tex}}};
+\node[groupbox,anchor=north west] (g-scratchpad) at ($(g-workspaces.south west)+(0,-\gutterY)$)
+  {\group{Scratchpad}{\colWidth}{\input{sections/scratchpad.tex}}};
+
+% ---- column B: Moving around / Layout -----------------------------------
+\node[groupbox,anchor=north west] (g-moving) at (colB)
+  {\group{Moving Around}{\colWidth}{\input{sections/moving.tex}}[arrow keys work the same as hjkl]};
+\node[groupbox,anchor=north west] (g-layout) at ($(g-moving.south west)+(0,-\gutterY)$)
+  {\group{Layout}{\colWidth}{\input{sections/layout.tex}}};
+
+% ---- column C: Resize mode / Media \& Utilities --------------------------
+\node[groupbox,anchor=north west] (g-resize) at (colC)
+  {\group{Resize Mode}{\colWidth}{\input{sections/resize.tex}}[in resize mode: hjkl / arrows shrink+grow \textbullet\ Return / Esc exits]};
+\node[groupbox,anchor=north west] (g-utilities) at ($(g-resize.south west)+(0,-\gutterY)$)
+  {\group{Media \& Utilities}{\colWidth}{\input{sections/utilities.tex}}};

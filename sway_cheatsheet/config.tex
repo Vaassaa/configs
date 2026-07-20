@@ -1,0 +1,37 @@
+% config.tex — every knob you're likely to want to turn. Nothing in
+% here should require touching style/keycheat.tex, layout.tex, or the
+% sections/ content files.
+
+% ---- Canvas (must match `swaymsg -t get_outputs`) ----------------------
+\def\wallW{1280}   % px — this device's output width
+\def\wallH{720}    % px — this device's output height
+
+% ---- Grid geometry (bp == px at 72dpi, matches the canvas units) ------
+\def\marginX{50}       % left/right page margin
+\def\marginTop{140}    % space reserved for the header block
+\def\marginBottom{40}  % bottom page margin
+\def\gutterX{35}       % horizontal gap between columns
+\def\gutterY{22}       % vertical gap between stacked group boxes
+\def\colWidth{370}     % width of every group box — change once, all resize
+
+% ---- Fonts (must exist in `fc-list`; swap freely) ----------------------
+% NB: "Adwaita Sans" is a variable font (single file, all weights via
+% named instances) and xdvipdfmx cannot embed it — it dies with
+% "Invalid font: -1". Stick to static families (separate Regular/
+% Bold/Italic files in `fc-list`) or check with a throwaway document
+% first. InputSans/InputMono Nerd Font are both static and pair well.
+\setmainfont{InputSans Nerd Font}
+\newfontfamily\titlefont{InputSans Nerd Font}
+\newfontfamily\keyfont{InputMono Nerd Font}
+
+% ---- Header text ---------------------------------------------------------
+\def\sheetTitle{SWAY}
+\def\sheetSubtitle{keyboard cheatsheet}
+\def\sheetMod{Mod}          % how the modifier key is labelled on keycaps
+\def\sheetModName{Alt}      % what it actually is (set \$mod Mod1 == Alt)
+\def\deviceName{uconsole}   % shown small, bottom-right corner
+
+% ---- Section toggles ----------------------------------------------------
+% There's no on/off switch here on purpose: layout.tex lists one \node
+% per group box, so "toggling" a section means commenting out its \node
+% line there. Keep this file to values, not structure.
